@@ -21,9 +21,15 @@ outputfile = open(filepath, 'a+')
 p = psutil.Process(nanopid)
 pp = p.ppid()
 nanoname = p.name()
-nanopp = psutil.Process(pp)
-ppname = nanopp.name()
-print('\nPID ' + str(nanopid) + ' is ' + nanoname + ' and the PPID is: ' + str(pp) + ' - ' + str(ppname))
+checkppid = psutil.pid_exists(pp)
+
+#check if ppid exists
+if checkppid == False:
+	print('\nPID ' + str(nanopid) + ' is ' + nanoname + ' - no parent process found or no longer running: ')
+else:
+	nanopp = (psutil.Process(pp))
+	ppname = nanopp.name()
+	print('\nPID ' + str(nanopid) + ' is ' + nanoname + ' and the PPID is: ' + str(pp) + ' - ' + str(ppname))
 
 # dump strings of running process
 print('\nDumping strings from memory to Desktop\n')
@@ -66,4 +72,3 @@ writekeyinfo = outputfile.write('\nPersistence via: \n' + hkcurun + '\n\n ' + st
 outputfile.close()
 os.remove(stringsfilepath)
 os.startfile(filepath)
-
