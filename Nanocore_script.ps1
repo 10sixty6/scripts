@@ -4,7 +4,6 @@
 
 <# Get NanocorePID and do initial checks #>
 $NanoPID = Read-Host -Prompt 'Enter the PID of the Nanocore Process'
-$NanoCheck = 
 $NanoName = gps -Id $NanoPID | select -ExpandProperty ProcessName
 Write-Host 'Nanocore process name is:' $NanoName
 $IOCSFile = "$env:USERPROFILE\Desktop\Nanocore_IOCS.txt"
