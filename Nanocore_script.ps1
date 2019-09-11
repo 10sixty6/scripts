@@ -42,9 +42,17 @@ ac $IOCSFile "`nPotential C2s found:"; ac $IOCSFile $findlines
 $MachGuid = gp -Path HKLM:\SOFTWARE\Microsoft\Cryptography | Select-Object -ExpandProperty MachineGuid
 $NanoFolder = -join ("$env:APPDATA","\","$MachGuid")
 Write-Host "`nChecking for created files/folders"
-ac $IOCSFile "`nFolder structure matching MachineGuid found: "
-$RunTree = tree /F $NanoFolder
-$RunTree | Out-File -Append $IOCSFile -Encoding UTF8
+if (!(Test-Path $NanoFolder))
+{
+	Write-Host "`nFolder structure not found"
+}
+else
+{
+	ac $IOCSFile "`nFolder structure matching MachineGuid found: "
+	Write-Host "`nFolder structure matching MachineGuid found: "
+	$RunTree = tree /F $NanoFolder
+	$RunTree | Out-File -Append $IOCSFile -Encoding UTF8
+}
 
 <# Get Persistence #>
 ac $IOCSFile -Value "`nPossible persistence found: "
