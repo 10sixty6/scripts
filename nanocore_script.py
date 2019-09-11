@@ -2,7 +2,14 @@
 # tbxtbxtbx
 # retrieve nanocore indicators from given PID.
 
-import psutil,sys,os,winreg
+import psutil,sys,os,winreg,platform
+
+# determine os architecture
+if platform.machine().endswith('64'):
+	ostype = 64
+else:
+	ostype = 32
+
 # get pid and check if its running
 os.system('cls')
 nanopid = int(input('Enter the PID of the Nanocore process: '))	
@@ -61,7 +68,10 @@ with open(stringsfilepath, "r") as input:
 #get machine guid
 guidregfull = 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Cryptography\\MachineGuid'
 guidreg = winreg.ConnectRegistry(None, winreg.HKEY_LOCAL_MACHINE)
-guidkey = winreg.OpenKey(guidreg, r"SOFTWARE\\Microsoft\\Cryptography\\", access=winreg.KEY_READ | winreg.KEY_WOW64_64KEY)
+if ostype == 64:
+	guidkey = winreg.OpenKey(guidreg, r"SOFTWARE\\Microsoft\\Cryptography\\", access=winreg.KEY_READ | winreg.KEY_WOW64_64KEY)
+if ostype == 32:
+	guidkey = winreg.OpenKey(guidreg, r"SOFTWARE\\Microsoft\\Cryptography\\")
 rawmachguid = winreg.QueryValueEx(guidkey, "MachineGuid")
 firstguid = str(rawmachguid[0])
 winreg.CloseKey(guidreg)
