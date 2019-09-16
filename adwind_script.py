@@ -41,8 +41,8 @@ outputfile.write('\nMD5: ' + jarhash)
 if checkppid == False:
 	print('\nPID ' + str(adwindpid) + ' is ' + adwindname + ' - no parent process found or no longer running: ')
 else:
-	nanopp = (psutil.Process(pp))
-	ppname = nanopp.name()
+	adwindpp = (psutil.Process(pp))
+	ppname = adwindpp.name()
 	print('\nPID ' + str(adwindpid) + ' is ' + adwindname + ' and the PPID is: ' + str(pp) + ' - ' + str(ppname))
 
 #dump strings of running process
