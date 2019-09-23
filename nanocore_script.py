@@ -2,7 +2,7 @@
 # tbxtbxtbx
 # retrieve nanocore indicators from given PID.
 
-import psutil,sys,os,winreg,platform
+import psutil,sys,os,winreg,platform,hashlib
 
 # determine os architecture
 if platform.machine().endswith('64'):
@@ -27,7 +27,10 @@ outputfile = open(filepath, 'a+')
 #get process name of pid/ppid
 p = psutil.Process(nanopid)
 pp = p.ppid()
+nanocmd = p.cmdline()
+fileloc = nanocmd[0]
 nanoname = p.name()
+outputfile.write('Process name: ' + str(nanoname) + '\nCommand Line: ' + str(p.cmdline()) + '\nPayload location: ' + fileloc)
 checkppid = psutil.pid_exists(pp)
 
 #check if ppid exists
@@ -37,6 +40,14 @@ else:
 	nanopp = (psutil.Process(pp))
 	ppname = nanopp.name()
 	print('\nPID ' + str(nanopid) + ' is ' + nanoname + ' and the PPID is: ' + str(pp) + ' - ' + str(ppname))
+
+#get hash of payload.
+hasher = hashlib.md5()
+with open(fileloc, 'rb') as hashme:
+	readfile = hashme.read()
+	hasher.update(readfile)
+nanohash = hasher.hexdigest()
+outputfile.write('\nMD5: ' + nanohash)
 
 # dump strings of running process
 print('\nDumping strings from memory to Desktop\n')
@@ -58,7 +69,7 @@ matchstringcc = 'PrimaryConnectionHost'
 with open(stringsfilepath, "r") as input:
     for line in input:
         if matchstringcc in line:
-        	outputfile.write('Found potential C2:\n' + line)
+        	outputfile.write('\n\nFound potential C2:\n' + line)
         	outputfile.write(next(input))
         	outputfile.write(next(input))
         	outputfile.write(next(input))
