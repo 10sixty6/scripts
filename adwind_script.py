@@ -2,10 +2,16 @@
 # tbxtbxtbx
 # retrieve adwind indicators from a given PID.
 
-# to do - cater for multiple network/port entries in config.
+# to do - cater for multiple network/port entries in config. stop using os.system
 
 import psutil,sys,os,winreg, hashlib
-	
+
+def cleanup():
+	outputfile.close()
+	os.remove(stringsfilepath)
+	os.startfile(filepath)
+	quit()
+
 #get pid and check if its running
 os.system('cls')
 adwindpid = int(input('Enter the PID of the adwind process (java.exe): '))
@@ -82,14 +88,16 @@ outputfile = open(filepath, 'a+')
 writec2info = outputfile.write('\nC2 found: \n' + ccserver + ':' + ccport)
 
 #get persistence from run key
-hkcurun = "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
-reg = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
-regkey = winreg.OpenKey(reg, r"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run")
-enumkeydata = winreg.QueryValueEx(regkey, stripval)
+try:
+	hkcurun = "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run"
+	reg = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
+	regkey = winreg.OpenKey(reg, r"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run")
+	enumkeydata = winreg.QueryValueEx(regkey, stripval)
+except OSError:
+	print('\n** Reg value not found, try rerunning the adwind sample & this script **')
+	cleanup()
 print('\nPossible Persistence found in: ' + hkcurun + '\n')
 writekeyinfo = outputfile.write('\n\nPersistence via: \n' + hkcurun + '\nValue name: ' + str(regvalue) + '\nValue data: '  + str(enumkeydata))
 
 #clean up and open iocs file
-outputfile.close()
-os.remove(stringsfilepath)
-os.startfile(filepath)
+cleanup()
