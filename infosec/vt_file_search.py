@@ -15,12 +15,9 @@ if len(sys.argv) < 2:
 hash_to_query = sys.argv[1]
 apikey = 'your key goes here'
 os.system('clear')
-print(' - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ')
-print()
+print(' - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n')
 print('Querying hash ' + hash_to_query + ' with VirusTotal')
-print()
-print(' - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ')
-print()
+print('\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n')
 url = 'https://www.virustotal.com/vtapi/v2/file/report?apikey=' + apikey + '&resource=' + hash_to_query
 response = requests.get(url).json()
 response_code = response['response_code']
@@ -32,12 +29,7 @@ detections = response['positives']
 sha = response['sha256']
 file_report = 'https://www.virustotal.com/#/file/' 
 print('\x1b[6;30;42m' + str(detections) + ' engines found this file malicious!' + '\x1b[0m')
-print()
-print(' - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ')
-print()
-print('View the report here:')
-print()
+print('\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n')
+print('View the report here:\n')
 print('\033[1m' + file_report + sha + '/detection' + '\033[0m')
-print()
-print(' - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ')
-print()
+print('\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n')
