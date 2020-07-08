@@ -3,14 +3,12 @@
 # https://github.com/tbxtbxtbx/
 
 # Example names files can be downloaded from 'https://www.cs.cmu.edu/afs/cs/project/ai-repository/ai/areas/nlp/corpora/names/'
-
-
 import random, os, pyfiglet
 os.system('clear')
 banner = pyfiglet.figlet_format("Name    Generator")
 print(banner)
-filegirls = '/Users/tbx/infosec/programming/python/girls.txt'
-fileboys =  '/Users/tbx/infosec/programming/python/boys.txt'
+filegirls = '/path/to/file/girls.txt'
+fileboys =  '/path/to/file/boys.txt'
 fg = open(filegirls, 'r')
 fb = open(fileboys, 'r')
 girllines = fg.readlines()
