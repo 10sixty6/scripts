@@ -1,3 +1,3 @@
 # scripts
 
-various scripts for various things.
+Scripts, split into subfolders based on usage for ease of perusal.
